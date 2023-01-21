@@ -1,0 +1,543 @@
+Parameters:
+  EEKeyPair:
+    Type: String
+    Default: EEKeyPair
+    Description: Event Engine Name of the EC2 KeyPair generated for the Team
+  LatestAMI:
+    Type: AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>
+    Default: /aws/service/ami-windows-latest/Windows_Server-2019-English-Full-Base
+    Description: Latest AMI from windows
+Resources:
+  isharevpcD1E0B8C1:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: 10.0.0.0/16
+      EnableDnsHostnames: true
+      EnableDnsSupport: true
+      InstanceTenancy: default
+      Tags:
+        - Key: Name
+          Value: CdkStack/ishare-vpc
+    Metadata:
+      aws:cdk:path: CdkStack/ishare-vpc/Resource
+  isharevpcpublicSubnet1Subnet98B3CC99:
+    Type: AWS::EC2::Subnet
+    Properties:
+      CidrBlock: 10.0.0.0/24
+      VpcId:
+        Ref: isharevpcD1E0B8C1
+      AvailabilityZone: us-east-2a
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: aws-cdk:subnet-name
+          Value: public
+        - Key: aws-cdk:subnet-type
+          Value: Public
+        - Key: Name
+          Value: CdkStack/ishare-vpc/publicSubnet1
+    Metadata:
+      aws:cdk:path: CdkStack/ishare-vpc/publicSubnet1/Subnet
+  isharevpcpublicSubnet1RouteTable5C0CAF84:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId:
+        Ref: isharevpcD1E0B8C1
+      Tags:
+        - Key: Name
+          Value: CdkStack/ishare-vpc/publicSubnet1
+    Metadata:
+      aws:cdk:path: CdkStack/ishare-vpc/publicSubnet1/RouteTable
+  isharevpcpublicSubnet1RouteTableAssociation9F9657C7:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId:
+        Ref: isharevpcpublicSubnet1RouteTable5C0CAF84
+      SubnetId:
+        Ref: isharevpcpublicSubnet1Subnet98B3CC99
+    Metadata:
+      aws:cdk:path: CdkStack/ishare-vpc/publicSubnet1/RouteTableAssociation
+  isharevpcpublicSubnet1DefaultRoute23E0EFA0:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId:
+        Ref: isharevpcpublicSubnet1RouteTable5C0CAF84
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId:
+        Ref: isharevpcIGW4FCEB05F
+    DependsOn:
+      - isharevpcVPCGWCC8AB1D2
+    Metadata:
+      aws:cdk:path: CdkStack/ishare-vpc/publicSubnet1/DefaultRoute
+  isharevpcpublicSubnet1EIP10455CE0:
+    Type: AWS::EC2::EIP
+    Properties:
+      Domain: vpc
+      Tags:
+        - Key: Name
+          Value: CdkStack/ishare-vpc/publicSubnet1
+    Metadata:
+      aws:cdk:path: CdkStack/ishare-vpc/publicSubnet1/EIP
+  isharevpcpublicSubnet1NATGateway2267070D:
+    Type: AWS::EC2::NatGateway
+    Properties:
+      SubnetId:
+        Ref: isharevpcpublicSubnet1Subnet98B3CC99
+      AllocationId:
+        Fn::GetAtt:
+          - isharevpcpublicSubnet1EIP10455CE0
+          - AllocationId
+      Tags:
+        - Key: Name
+          Value: CdkStack/ishare-vpc/publicSubnet1
+    Metadata:
+      aws:cdk:path: CdkStack/ishare-vpc/publicSubnet1/NATGateway
+  isharevpcpublicSubnet2Subnet7F1A0F8A:
+    Type: AWS::EC2::Subnet
+    Properties:
+      CidrBlock: 10.0.1.0/24
+      VpcId:
+        Ref: isharevpcD1E0B8C1
+      AvailabilityZone: us-east-2b
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: aws-cdk:subnet-name
+          Value: public
+        - Key: aws-cdk:subnet-type
+          Value: Public
+        - Key: Name
+          Value: CdkStack/ishare-vpc/publicSubnet2
+    Metadata:
+      aws:cdk:path: CdkStack/ishare-vpc/publicSubnet2/Subnet
+  isharevpcpublicSubnet2RouteTable1FC5DD10:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId:
+        Ref: isharevpcD1E0B8C1
+      Tags:
+        - Key: Name
+          Value: CdkStack/ishare-vpc/publicSubnet2
+    Metadata:
+      aws:cdk:path: CdkStack/ishare-vpc/publicSubnet2/RouteTable
+  isharevpcpublicSubnet2RouteTableAssociation58F122B5:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId:
+        Ref: isharevpcpublicSubnet2RouteTable1FC5DD10
+      SubnetId:
+        Ref: isharevpcpublicSubnet2Subnet7F1A0F8A
+    Metadata:
+      aws:cdk:path: CdkStack/ishare-vpc/publicSubnet2/RouteTableAssociation
+  isharevpcpublicSubnet2DefaultRoute48139ECD:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId:
+        Ref: isharevpcpublicSubnet2RouteTable1FC5DD10
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId:
+        Ref: isharevpcIGW4FCEB05F
+    DependsOn:
+      - isharevpcVPCGWCC8AB1D2
+    Metadata:
+      aws:cdk:path: CdkStack/ishare-vpc/publicSubnet2/DefaultRoute
+  isharevpcpublicSubnet3SubnetBCFFD5C6:
+    Type: AWS::EC2::Subnet
+    Properties:
+      CidrBlock: 10.0.2.0/24
+      VpcId:
+        Ref: isharevpcD1E0B8C1
+      AvailabilityZone: us-east-2c
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: aws-cdk:subnet-name
+          Value: public
+        - Key: aws-cdk:subnet-type
+          Value: Public
+        - Key: Name
+          Value: CdkStack/ishare-vpc/publicSubnet3
+    Metadata:
+      aws:cdk:path: CdkStack/ishare-vpc/publicSubnet3/Subnet
+  isharevpcpublicSubnet3RouteTableBDBC5F18:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId:
+        Ref: isharevpcD1E0B8C1
+      Tags:
+        - Key: Name
+          Value: CdkStack/ishare-vpc/publicSubnet3
+    Metadata:
+      aws:cdk:path: CdkStack/ishare-vpc/publicSubnet3/RouteTable
+  isharevpcpublicSubnet3RouteTableAssociationCCCFA3B1:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId:
+        Ref: isharevpcpublicSubnet3RouteTableBDBC5F18
+      SubnetId:
+        Ref: isharevpcpublicSubnet3SubnetBCFFD5C6
+    Metadata:
+      aws:cdk:path: CdkStack/ishare-vpc/publicSubnet3/RouteTableAssociation
+  isharevpcpublicSubnet3DefaultRouteC0B00CE1:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId:
+        Ref: isharevpcpublicSubnet3RouteTableBDBC5F18
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId:
+        Ref: isharevpcIGW4FCEB05F
+    DependsOn:
+      - isharevpcVPCGWCC8AB1D2
+    Metadata:
+      aws:cdk:path: CdkStack/ishare-vpc/publicSubnet3/DefaultRoute
+  isharevpcprivatenatSubnet1SubnetD65741B3:
+    Type: AWS::EC2::Subnet
+    Properties:
+      CidrBlock: 10.0.3.0/24
+      VpcId:
+        Ref: isharevpcD1E0B8C1
+      AvailabilityZone: us-east-2a
+      MapPublicIpOnLaunch: false
+      Tags:
+        - Key: aws-cdk:subnet-name
+          Value: private-nat
+        - Key: aws-cdk:subnet-type
+          Value: Private
+        - Key: Name
+          Value: CdkStack/ishare-vpc/private-natSubnet1
+    Metadata:
+      aws:cdk:path: CdkStack/ishare-vpc/private-natSubnet1/Subnet
+  isharevpcprivatenatSubnet1RouteTableF9182F7B:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId:
+        Ref: isharevpcD1E0B8C1
+      Tags:
+        - Key: Name
+          Value: CdkStack/ishare-vpc/private-natSubnet1
+    Metadata:
+      aws:cdk:path: CdkStack/ishare-vpc/private-natSubnet1/RouteTable
+  isharevpcprivatenatSubnet1RouteTableAssociationDA152200:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId:
+        Ref: isharevpcprivatenatSubnet1RouteTableF9182F7B
+      SubnetId:
+        Ref: isharevpcprivatenatSubnet1SubnetD65741B3
+    Metadata:
+      aws:cdk:path: CdkStack/ishare-vpc/private-natSubnet1/RouteTableAssociation
+  isharevpcprivatenatSubnet1DefaultRouteEDF12DC0:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId:
+        Ref: isharevpcprivatenatSubnet1RouteTableF9182F7B
+      DestinationCidrBlock: 0.0.0.0/0
+      NatGatewayId:
+        Ref: isharevpcpublicSubnet1NATGateway2267070D
+    Metadata:
+      aws:cdk:path: CdkStack/ishare-vpc/private-natSubnet1/DefaultRoute
+  isharevpcprivatenatSubnet2SubnetCC0F7819:
+    Type: AWS::EC2::Subnet
+    Properties:
+      CidrBlock: 10.0.4.0/24
+      VpcId:
+        Ref: isharevpcD1E0B8C1
+      AvailabilityZone: us-east-2b
+      MapPublicIpOnLaunch: false
+      Tags:
+        - Key: aws-cdk:subnet-name
+          Value: private-nat
+        - Key: aws-cdk:subnet-type
+          Value: Private
+        - Key: Name
+          Value: CdkStack/ishare-vpc/private-natSubnet2
+    Metadata:
+      aws:cdk:path: CdkStack/ishare-vpc/private-natSubnet2/Subnet
+  isharevpcprivatenatSubnet2RouteTable3273805C:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId:
+        Ref: isharevpcD1E0B8C1
+      Tags:
+        - Key: Name
+          Value: CdkStack/ishare-vpc/private-natSubnet2
+    Metadata:
+      aws:cdk:path: CdkStack/ishare-vpc/private-natSubnet2/RouteTable
+  isharevpcprivatenatSubnet2RouteTableAssociationB3A6C43D:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId:
+        Ref: isharevpcprivatenatSubnet2RouteTable3273805C
+      SubnetId:
+        Ref: isharevpcprivatenatSubnet2SubnetCC0F7819
+    Metadata:
+      aws:cdk:path: CdkStack/ishare-vpc/private-natSubnet2/RouteTableAssociation
+  isharevpcprivatenatSubnet2DefaultRoute838F478A:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId:
+        Ref: isharevpcprivatenatSubnet2RouteTable3273805C
+      DestinationCidrBlock: 0.0.0.0/0
+      NatGatewayId:
+        Ref: isharevpcpublicSubnet1NATGateway2267070D
+    Metadata:
+      aws:cdk:path: CdkStack/ishare-vpc/private-natSubnet2/DefaultRoute
+  isharevpcprivatenatSubnet3SubnetCBC060C9:
+    Type: AWS::EC2::Subnet
+    Properties:
+      CidrBlock: 10.0.5.0/24
+      VpcId:
+        Ref: isharevpcD1E0B8C1
+      AvailabilityZone: us-east-2c
+      MapPublicIpOnLaunch: false
+      Tags:
+        - Key: aws-cdk:subnet-name
+          Value: private-nat
+        - Key: aws-cdk:subnet-type
+          Value: Private
+        - Key: Name
+          Value: CdkStack/ishare-vpc/private-natSubnet3
+    Metadata:
+      aws:cdk:path: CdkStack/ishare-vpc/private-natSubnet3/Subnet
+  isharevpcprivatenatSubnet3RouteTable2E83A99A:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId:
+        Ref: isharevpcD1E0B8C1
+      Tags:
+        - Key: Name
+          Value: CdkStack/ishare-vpc/private-natSubnet3
+    Metadata:
+      aws:cdk:path: CdkStack/ishare-vpc/private-natSubnet3/RouteTable
+  isharevpcprivatenatSubnet3RouteTableAssociationB5387D83:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId:
+        Ref: isharevpcprivatenatSubnet3RouteTable2E83A99A
+      SubnetId:
+        Ref: isharevpcprivatenatSubnet3SubnetCBC060C9
+    Metadata:
+      aws:cdk:path: CdkStack/ishare-vpc/private-natSubnet3/RouteTableAssociation
+  isharevpcprivatenatSubnet3DefaultRouteDCDCA7A4:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId:
+        Ref: isharevpcprivatenatSubnet3RouteTable2E83A99A
+      DestinationCidrBlock: 0.0.0.0/0
+      NatGatewayId:
+        Ref: isharevpcpublicSubnet1NATGateway2267070D
+    Metadata:
+      aws:cdk:path: CdkStack/ishare-vpc/private-natSubnet3/DefaultRoute
+  isharevpcprivateSubnet1SubnetDED8A2D1:
+    Type: AWS::EC2::Subnet
+    Properties:
+      CidrBlock: 10.0.6.0/24
+      VpcId:
+        Ref: isharevpcD1E0B8C1
+      AvailabilityZone: us-east-2a
+      MapPublicIpOnLaunch: false
+      Tags:
+        - Key: aws-cdk:subnet-name
+          Value: private
+        - Key: aws-cdk:subnet-type
+          Value: Isolated
+        - Key: Name
+          Value: CdkStack/ishare-vpc/privateSubnet1
+    Metadata:
+      aws:cdk:path: CdkStack/ishare-vpc/privateSubnet1/Subnet
+  isharevpcprivateSubnet1RouteTableFD206D40:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId:
+        Ref: isharevpcD1E0B8C1
+      Tags:
+        - Key: Name
+          Value: CdkStack/ishare-vpc/privateSubnet1
+    Metadata:
+      aws:cdk:path: CdkStack/ishare-vpc/privateSubnet1/RouteTable
+  isharevpcprivateSubnet1RouteTableAssociationA2A78FD9:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId:
+        Ref: isharevpcprivateSubnet1RouteTableFD206D40
+      SubnetId:
+        Ref: isharevpcprivateSubnet1SubnetDED8A2D1
+    Metadata:
+      aws:cdk:path: CdkStack/ishare-vpc/privateSubnet1/RouteTableAssociation
+  isharevpcprivateSubnet2SubnetD9F0D30F:
+    Type: AWS::EC2::Subnet
+    Properties:
+      CidrBlock: 10.0.7.0/24
+      VpcId:
+        Ref: isharevpcD1E0B8C1
+      AvailabilityZone: us-east-2b
+      MapPublicIpOnLaunch: false
+      Tags:
+        - Key: aws-cdk:subnet-name
+          Value: private
+        - Key: aws-cdk:subnet-type
+          Value: Isolated
+        - Key: Name
+          Value: CdkStack/ishare-vpc/privateSubnet2
+    Metadata:
+      aws:cdk:path: CdkStack/ishare-vpc/privateSubnet2/Subnet
+  isharevpcprivateSubnet2RouteTable2B43293F:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId:
+        Ref: isharevpcD1E0B8C1
+      Tags:
+        - Key: Name
+          Value: CdkStack/ishare-vpc/privateSubnet2
+    Metadata:
+      aws:cdk:path: CdkStack/ishare-vpc/privateSubnet2/RouteTable
+  isharevpcprivateSubnet2RouteTableAssociationAC2C0D77:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId:
+        Ref: isharevpcprivateSubnet2RouteTable2B43293F
+      SubnetId:
+        Ref: isharevpcprivateSubnet2SubnetD9F0D30F
+    Metadata:
+      aws:cdk:path: CdkStack/ishare-vpc/privateSubnet2/RouteTableAssociation
+  isharevpcprivateSubnet3SubnetE07796C9:
+    Type: AWS::EC2::Subnet
+    Properties:
+      CidrBlock: 10.0.8.0/24
+      VpcId:
+        Ref: isharevpcD1E0B8C1
+      AvailabilityZone: us-east-2c
+      MapPublicIpOnLaunch: false
+      Tags:
+        - Key: aws-cdk:subnet-name
+          Value: private
+        - Key: aws-cdk:subnet-type
+          Value: Isolated
+        - Key: Name
+          Value: CdkStack/ishare-vpc/privateSubnet3
+    Metadata:
+      aws:cdk:path: CdkStack/ishare-vpc/privateSubnet3/Subnet
+  isharevpcprivateSubnet3RouteTable0B9FFB9A:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId:
+        Ref: isharevpcD1E0B8C1
+      Tags:
+        - Key: Name
+          Value: CdkStack/ishare-vpc/privateSubnet3
+    Metadata:
+      aws:cdk:path: CdkStack/ishare-vpc/privateSubnet3/RouteTable
+  isharevpcprivateSubnet3RouteTableAssociation636EAB29:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId:
+        Ref: isharevpcprivateSubnet3RouteTable0B9FFB9A
+      SubnetId:
+        Ref: isharevpcprivateSubnet3SubnetE07796C9
+    Metadata:
+      aws:cdk:path: CdkStack/ishare-vpc/privateSubnet3/RouteTableAssociation
+  isharevpcIGW4FCEB05F:
+    Type: AWS::EC2::InternetGateway
+    Properties:
+      Tags:
+        - Key: Name
+          Value: CdkStack/ishare-vpc
+    Metadata:
+      aws:cdk:path: CdkStack/ishare-vpc/IGW
+  isharevpcVPCGWCC8AB1D2:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      VpcId:
+        Ref: isharevpcD1E0B8C1
+      InternetGatewayId:
+        Ref: isharevpcIGW4FCEB05F
+    Metadata:
+      aws:cdk:path: CdkStack/ishare-vpc/VPCGW
+  ishareDevCloud9Instance6C2AED21:
+    Type: AWS::Cloud9::EnvironmentEC2
+    Properties:
+      InstanceType: t3.medium
+      SubnetId:
+        Ref: isharevpcpublicSubnet1Subnet98B3CC99
+    Metadata:
+      aws:cdk:path: CdkStack/ishare-DevCloud9Instance/Resource
+  ishareuserpool25F79D02:
+    Type: AWS::Cognito::UserPool
+    Properties:
+      AccountRecoverySetting:
+        RecoveryMechanisms:
+          - Name: verified_email
+            Priority: 1
+      AdminCreateUserConfig:
+        AllowAdminCreateUserOnly: false
+      AutoVerifiedAttributes:
+        - email
+      EmailVerificationMessage: The verification code to your new account is {####}
+      EmailVerificationSubject: Verify your new account
+      Policies:
+        PasswordPolicy:
+          MinimumLength: 6
+          RequireLowercase: false
+          RequireNumbers: false
+          RequireUppercase: false
+          TemporaryPasswordValidityDays: 1
+      Schema:
+        - Mutable: true
+          Name: email
+          Required: false
+      SmsVerificationMessage: The verification code to your new account is {####}
+      VerificationMessageTemplate:
+        DefaultEmailOption: CONFIRM_WITH_CODE
+        EmailMessage: The verification code to your new account is {####}
+        EmailSubject: Verify your new account
+        SmsMessage: The verification code to your new account is {####}
+    UpdateReplacePolicy: Retain
+    DeletionPolicy: Retain
+    Metadata:
+      aws:cdk:path: CdkStack/ishareuserpool/Resource
+  ishareuserpoolclient1E113749:
+    Type: AWS::Cognito::UserPoolClient
+    Properties:
+      UserPoolId:
+        Ref: ishareuserpool25F79D02
+      AccessTokenValidity: 10
+      AllowedOAuthFlows:
+        - implicit
+        - code
+      AllowedOAuthFlowsUserPoolClient: true
+      AllowedOAuthScopes:
+        - profile
+        - phone
+        - email
+        - openid
+        - aws.cognito.signin.user.admin
+      CallbackURLs:
+        - https://example.com
+      ExplicitAuthFlows:
+        - ALLOW_USER_PASSWORD_AUTH
+        - ALLOW_ADMIN_USER_PASSWORD_AUTH
+        - ALLOW_CUSTOM_AUTH
+        - ALLOW_USER_SRP_AUTH
+        - ALLOW_REFRESH_TOKEN_AUTH
+      IdTokenValidity: 10
+      PreventUserExistenceErrors: ENABLED
+      RefreshTokenValidity: 60
+      SupportedIdentityProviders:
+        - COGNITO
+      TokenValidityUnits:
+        AccessToken: minutes
+        IdToken: minutes
+        RefreshToken: minutes
+    Metadata:
+      aws:cdk:path: CdkStack/ishareuserpoolclient/Resource
+  CDKMetadata:
+    Type: AWS::CDK::Metadata
+    Properties:
+      Analytics: v2:deflate64:H4sIAAAAAAAA/1WQwW7CMAyGn2X3EGiRJu02FFUTly0qG/c09VigjVHiFE1R330JUKqd/Pvzb8dxwYv1iq+eXtXFL3R7WkaNDnjckdInJr6tVE71QOBYDR6D05DpR6BzICbQenJBU2ZTfWR5VgRd8rg/61zaS8FkaDqjd6GxcLXPqsZA8KmaDmY+s433qI0ig/ZhzqLayhzeFb0pgov6ZdKZIcl58NamvZOeDLdN7tmG0hd/erA0Mt1haF94rHRZ2cE4tJlfX5nTSpTJiQdrCHn88uAkYpdNDz0J0Zl7/38yjiOz2AI/+uVQPPN1uvzRG7NwwZLpgde3+Ae748QBlgEAAA==
+    Metadata:
+      aws:cdk:path: CdkStack/CDKMetadata/Default
+Outputs:
+  userpoolid:
+    Value:
+      Ref: ishareuserpool25F79D02
+  userpoolclientid:
+    Value:
+      Ref: ishareuserpoolclient1E113749
+

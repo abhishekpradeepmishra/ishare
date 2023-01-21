@@ -1,0 +1,352 @@
+# This is the SAM template that represents the architecture of your serverless application
+# https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-template-basics.html
+
+# The AWSTemplateFormatVersion identifies the capabilities of the template
+# https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/format-version-structure.html
+AWSTemplateFormatVersion: 2010-09-09
+Description: >-
+  networkmanagement
+
+Transform:
+- AWS::Serverless-2016-10-31
+
+Parameters:
+  NeptuneClusterEndpoint:
+    Description: 'The Neptune cluster endpoint'
+    Type: String
+  NeptunePort:
+    Description: 'The Neptune port'
+    Type: String
+    Default: '8182'
+  # NeptuneClusterResourceID:
+  #   Description: 'To find the Neptune cluster resource ID in the Amazon Neptune AWS Management Console, choose the DB cluster that you want. The Resource ID is shown in the Configuration section.'
+  #   Type: String
+  LambdaTimeout:
+    Description: 'Maximum Lambda invocation runtime in seconds. (min 1 - 900 max)'
+    Default: 20
+    Type: Number
+  LambdaMemory:
+    Description: 'Lambda memory in MB (min 128 - 3008 max).'
+    Default: 128
+    Type: Number
+  SecurityGroupIds:
+    Description: 'One or more SecurityGroup IDs corresponding to the SecurityGroup(s) that should be applied to the Lambda function to allow connectivity to Neptune cluster. (e.g. sg1,sg2,sg3)'
+    Type: 'List<AWS::EC2::SecurityGroup::Id>'
+  SubnetIds:
+    Description: 'One or more Subnet IDs corresponding to the Subnet(s) that the Lambda function can use to access the Neptune cluster. (e.g. subnet1,subnet2)'
+    Type: 'List<AWS::EC2::Subnet::Id>'
+
+Resources:
+  # Each Lambda function is defined by properties:
+  # https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+
+  # This is a Lambda function config associated with the source code: get-all-items.js
+  getAllPostsbyFollowingFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: handlers/get-all-posts-byfollows.handler
+      Runtime: nodejs14.x
+      Architectures:
+        - x86_64
+      Description: Read all posts by users I follow
+      Policies:
+        - Statement:
+            # - Action:
+            #     - glue:GetTableVersions
+            #     - glue:GetPartitions
+            #     - glue:GetTables
+            #     - glue:GetTableVersion
+            #     - glue:GetDatabases
+            #     - glue:GetTable
+            #     - glue:GetPartition
+            #     - glue:GetDatabase              
+            #     - athena:GetQueryExecution
+            #     - s3:ListAllMyBuckets
+            #   Effect: Allow
+            #   Resource: '*'
+            - Action:
+                - neptune-db:*
+              Effect: Allow
+              #Dynamically construct Neptune Cluster Resource ARN to limit permissions to the specific cluster provided
+              # Resource: !Sub 'arn:${AWS::Partition}:neptune-db:${AWS::Region}:${AWS::AccountId}:${NeptuneClusterResourceID}/*'
+              Resource: !Sub 'arn:${AWS::Partition}:neptune-db:${AWS::Region}:${AWS::AccountId}:*/*'
+          Version: '2012-10-17'
+      Environment:
+        Variables:
+          neptune_endpoint: !Ref NeptuneClusterEndpoint
+          neptune_port: !Ref NeptunePort
+          # neptune_cluster_res_id: !Ref NeptuneClusterResourceID
+      VpcConfig:
+        SecurityGroupIds: !Ref SecurityGroupIds
+        SubnetIds: !Ref SubnetIds
+      Timeout: !Ref LambdaTimeout
+      MemorySize: !Ref LambdaMemory
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /posts/{user}/follows
+            Method: GET
+  
+  getUserSummary:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: handlers/get-usersummary.handler
+      Runtime: nodejs14.x
+      Architectures:
+        - x86_64
+      Description: Read all posts by users I follow
+      Policies:
+        - Statement:
+            # - Action:
+            #     - glue:GetTableVersions
+            #     - glue:GetPartitions
+            #     - glue:GetTables
+            #     - glue:GetTableVersion
+            #     - glue:GetDatabases
+            #     - glue:GetTable
+            #     - glue:GetPartition
+            #     - glue:GetDatabase              
+            #     - athena:GetQueryExecution
+            #     - s3:ListAllMyBuckets
+            #   Effect: Allow
+            #   Resource: '*'
+            - Action:
+                - neptune-db:*
+              Effect: Allow
+              #Dynamically construct Neptune Cluster Resource ARN to limit permissions to the specific cluster provided
+              # Resource: !Sub 'arn:${AWS::Partition}:neptune-db:${AWS::Region}:${AWS::AccountId}:${NeptuneClusterResourceID}/*'
+              Resource: !Sub 'arn:${AWS::Partition}:neptune-db:${AWS::Region}:${AWS::AccountId}:*/*'
+          Version: '2012-10-17'
+      Environment:
+        Variables:
+          neptune_endpoint: !Ref NeptuneClusterEndpoint
+          neptune_port: !Ref NeptunePort
+          # neptune_cluster_res_id: !Ref NeptuneClusterResourceID
+      VpcConfig:
+        SecurityGroupIds: !Ref SecurityGroupIds
+        SubnetIds: !Ref SubnetIds
+      Timeout: !Ref LambdaTimeout
+      MemorySize: !Ref LambdaMemory
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /user/{user}
+            Method: GET
+  
+  # This is a Lambda function config associated with the source code: get-all-items.js
+  getAllPostsbyUserFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: handlers/get-all-posts-byuser.handler
+      Runtime: nodejs14.x
+      Architectures:
+        - x86_64
+      Description: A simple example includes a HTTP get method to get all items from a DynamoDB table.
+      Policies:
+        - Statement:
+            # - Action:
+            #     - glue:GetTableVersions
+            #     - glue:GetPartitions
+            #     - glue:GetTables
+            #     - glue:GetTableVersion
+            #     - glue:GetDatabases
+            #     - glue:GetTable
+            #     - glue:GetPartition
+            #     - glue:GetDatabase              
+            #     - athena:GetQueryExecution
+            #     - s3:ListAllMyBuckets
+            #   Effect: Allow
+            #   Resource: '*'
+            - Action:
+                - neptune-db:*
+              Effect: Allow
+              #Dynamically construct Neptune Cluster Resource ARN to limit permissions to the specific cluster provided
+              # Resource: !Sub 'arn:${AWS::Partition}:neptune-db:${AWS::Region}:${AWS::AccountId}:${NeptuneClusterResourceID}/*'
+              Resource: !Sub 'arn:${AWS::Partition}:neptune-db:${AWS::Region}:${AWS::AccountId}:*/*'
+          Version: '2012-10-17'
+      Environment:
+        Variables:
+          neptune_endpoint: !Ref NeptuneClusterEndpoint
+          neptune_port: !Ref NeptunePort
+          # neptune_cluster_res_id: !Ref NeptuneClusterResourceID
+      VpcConfig:
+        SecurityGroupIds: !Ref SecurityGroupIds
+        SubnetIds: !Ref SubnetIds
+      Timeout: !Ref LambdaTimeout
+      MemorySize: !Ref LambdaMemory
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /posts/{user}
+            Method: GET
+            
+  addPostSQSQueueFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: handlers/addPost.handler
+      Runtime: nodejs14.x
+      Policies:
+        - Statement:
+            # - Action:
+            #     - glue:GetTableVersions
+            #     - glue:GetPartitions
+            #     - glue:GetTables
+            #     - glue:GetTableVersion
+            #     - glue:GetDatabases
+            #     - glue:GetTable
+            #     - glue:GetPartition
+            #     - glue:GetDatabase              
+            #     - athena:GetQueryExecution
+            #     - s3:ListAllMyBuckets
+            #   Effect: Allow
+            #   Resource: '*'
+            - Action:
+                - neptune-db:*
+              Effect: Allow
+              #Dynamically construct Neptune Cluster Resource ARN to limit permissions to the specific cluster provided
+              # Resource: !Sub 'arn:${AWS::Partition}:neptune-db:${AWS::Region}:${AWS::AccountId}:${NeptuneClusterResourceID}/*'
+              Resource: !Sub 'arn:${AWS::Partition}:neptune-db:${AWS::Region}:${AWS::AccountId}:*/*'
+          Version: '2012-10-17'
+      Environment:
+        Variables:
+          neptune_endpoint: !Ref NeptuneClusterEndpoint
+          neptune_port: !Ref NeptunePort
+          # neptune_cluster_res_id: !Ref NeptuneClusterResourceID
+      VpcConfig:
+        SecurityGroupIds: !Ref SecurityGroupIds
+        SubnetIds: !Ref SubnetIds
+      Timeout: !Ref LambdaTimeout
+      MemorySize: !Ref LambdaMemory
+      Events:
+        MySQSEvent:
+          Type: SQS
+          Properties:
+            Queue: !Sub  'arn:aws:sqs:us-east-2:${AWS::AccountId}:GraphProcessingQueue'
+            BatchSize: 10
+  
+  likesPostSQSQueueFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: handlers/likesPost.handler
+      Runtime: nodejs14.x
+      Policies:
+        - Statement:
+            # - Action:
+            #     - glue:GetTableVersions
+            #     - glue:GetPartitions
+            #     - glue:GetTables
+            #     - glue:GetTableVersion
+            #     - glue:GetDatabases
+            #     - glue:GetTable
+            #     - glue:GetPartition
+            #     - glue:GetDatabase              
+            #     - athena:GetQueryExecution
+            #     - s3:ListAllMyBuckets
+            #   Effect: Allow
+            #   Resource: '*'
+            - Action:
+                - neptune-db:*
+              Effect: Allow
+              #Dynamically construct Neptune Cluster Resource ARN to limit permissions to the specific cluster provided
+              # Resource: !Sub 'arn:${AWS::Partition}:neptune-db:${AWS::Region}:${AWS::AccountId}:${NeptuneClusterResourceID}/*'
+              Resource: !Sub 'arn:${AWS::Partition}:neptune-db:${AWS::Region}:${AWS::AccountId}:*/*'
+          Version: '2012-10-17'
+      Environment:
+        Variables:
+          neptune_endpoint: !Ref NeptuneClusterEndpoint
+          neptune_port: !Ref NeptunePort
+          # neptune_cluster_res_id: !Ref NeptuneClusterResourceID
+      VpcConfig:
+        SecurityGroupIds: !Ref SecurityGroupIds
+        SubnetIds: !Ref SubnetIds
+      Timeout: !Ref LambdaTimeout
+      MemorySize: !Ref LambdaMemory
+      Events:
+        MySQSEvent:
+          Type: SQS
+          Properties:
+            Queue: !GetAtt likesPostSqsQueue.Arn
+            BatchSize: 10
+  
+  likesPostSqsQueue:
+    Type: AWS::SQS::Queue
+            
+  # Each Lambda function is defined by properties:
+  # https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+  # This is a Lambda function config associated with the source code: get-all-items.js
+ 
+ 
+  # Each Lambda function is defined by properties:
+  # https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+
+  # This is a Lambda function config associated with the source code: put-item.js
+  # putItemFunction:
+  #   Type: AWS::Serverless::Function
+  #   Properties:
+  #     Handler: src/handlers/put-item.putItemHandler
+  #     Runtime: nodejs14.x
+  #     Architectures:
+  #       - x86_64
+  #     MemorySize: 128
+  #     Timeout: 100
+  #     Description: A simple example includes a HTTP post method to add one item to a DynamoDB table.
+  #     Policies:
+  #       # Give Create/Read/Update/Delete Permissions to the SampleTable
+  #       - DynamoDBCrudPolicy:
+  #           TableName: !Ref SampleTable
+  #     Environment:
+  #       Variables:
+  #         # Make table name accessible as environment variable from function code during execution
+  #         SAMPLE_TABLE: !Ref SampleTable
+  #     Events:
+  #       Api:
+  #         Type: Api
+  #         Properties:
+  #           Path: /
+  #           Method: POST
+  # Simple syntax to create a DynamoDB table with a single attribute primary key, more in
+  # https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlesssimpletable
+  
+  #NeptuneLambdaExecRole:
+  #  Type: "AWS::IAM::Role"
+  #  Properties:
+  #    AssumeRolePolicyDocument:
+  #      Version: "2012-10-17"
+  #      Statement:
+  #        - Effect: "Allow"
+  #          Principal:
+  #            Service:
+  #              - "lambda.amazonaws.com"
+  #          Action:
+  #            - "sts:AssumeRole"
+  #    Path: "/"
+  #    Policies:
+  #      - Statement:
+            # - Action:
+            #     - glue:GetTableVersions
+            #     - glue:GetPartitions
+            #     - glue:GetTables
+            #     - glue:GetTableVersion
+            #     - glue:GetDatabases
+            #     - glue:GetTable
+            #     - glue:GetPartition
+            #     - glue:GetDatabase              
+            #     - athena:GetQueryExecution
+            #     - s3:ListAllMyBuckets
+            #   Effect: Allow
+            #   Resource: '*'
+            #- Action:
+                #- neptune-db:*
+              #Effect: Allow
+              #Dynamically construct Neptune Cluster Resource ARN to limit permissions to the specific cluster provided
+              # Resource: !Sub 'arn:${AWS::Partition}:neptune-db:${AWS::Region}:${AWS::AccountId}:${NeptuneClusterResourceID}/*'
+              #Resource: !Sub 'arn:${AWS::Partition}:neptune-db:${AWS::Region}:${AWS::AccountId}:*/*'
+          #Version: '2012-10-17'
+
+Outputs:
+  WebEndpoint:
+    Description: "API Gateway endpoint URL for Prod stage"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/"

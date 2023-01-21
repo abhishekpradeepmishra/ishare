@@ -1,0 +1,22 @@
+{
+    "Records": [
+      {
+        "EventSource": "aws:sns",
+        "EventVersion": "1.0",
+        "EventSubscriptionArn": "arn:aws:sns:us-east-2:148552580999:ishare-fanout:ca2a9a67-a201-4a9a-807d-85c64b06564f",
+        "Sns": {
+          "Type": "Notification",
+          "MessageId": "37150e69-3204-5f5d-9632-5459e68e8b17",
+          "TopicArn": "arn:aws:sns:us-east-2:148552580999:ishare-fanout",
+          "Subject": "test",
+          "Message": "eyJldmVudElEIjoiZjEyMGUzZmY2MWM2NjE2ODQ0YWFhNDhkNDFiNTc5MTgiLCJldmVudE5hbWUiOiJJTlNFUlQiLCJldmVudFZlcnNpb24iOiIxLjEiLCJldmVudFNvdXJjZSI6ImF3czpkeW5hbW9kYiIsImF3c1JlZ2lvbiI6InVzLWVhc3QtMiIsImR5bmFtb2RiIjp7IkFwcHJveGltYXRlQ3JlYXRpb25EYXRlVGltZSI6MTYzODUwMjU2OSwiS2V5cyI6eyJldmVudElkIjp7IlMiOiJhNmYzNjA2MmIwMWM4NGI5MmFkMWYwODcwYmRmOTQ5NTAxMjM0NSJ9LCJhY3Rpb24iOnsiUyI6ImZvbGxvdyJ9fSwiTmV3SW1hZ2UiOnsiZXZlbnRJZCI6eyJTIjoiYTZmMzYwNjJiMDFjODRiOTJhZDFmMDg3MGJkZjk0OTUwMTIzNDUifSwiZ3NpX3NrMSI6eyJTIjoidTk1OGQ2ZTRmYTgzYzQyN2JiNjlhZmEyMWMxMmYxZGI3I2ZvbGxvd3UxMzlkMjZkMTJiNGE0Yjg5YWE4NDJjNzI2ZjBlYjY3MyJ9LCJieSI6eyJTIjoidTk1OGQ2ZTRmYTgzYzQyN2JiNjlhZmEyMWMxMmYxZGI3ZmFidGFuIn0sImFjdGlvbiI6eyJTIjoiZm9sbG93In0sImdzaV9zazIiOnsiUyI6InUxMzlkMjZkMTJiNGE0Yjg5YWE4NDJjNzI2ZjBlYjY3MyNmb2xsb3dlZGJ5dTk1OGQ2ZTRmYTgzYzQyN2JiNjlhZmEyMWMxMmYxZGI3In0sImVudGl0eSI6eyJTIjoidTEzOWQyNmQxMmI0YTRiODlhYTg0MmM3MjZmMGViNjczIn19LCJTZXF1ZW5jZU51bWJlciI6IjMyNTIxMDAwMDAwMDAwMTE5MDM5NjYzMTYiLCJTaXplQnl0ZXMiOjM1OCwiU3RyZWFtVmlld1R5cGUiOiJORVdfSU1BR0UifSwiZXZlbnRTb3VyY2VBUk4iOiJhcm46YXdzOmR5bmFtb2RiOnVzLWVhc3QtMjoxNDg1NTI1ODA5OTk6dGFibGUvaXNoYXJlLXVzZXJwb3N0L3N0cmVhbS8yMDIxLTEyLTAyVDA5OjE4OjQ4LjUxMSJ9",
+          "Timestamp": "2021-12-13T04:55:38.379Z",
+          "SignatureVersion": "1",
+          "Signature": "ZS1U2XkvpBMTJ+uS40LZXL7noWu4JMPWQbxefRB80ish5LaOhlYVCe1/7x7tXp2jFiaEsIchDVGjlH/vCutW57pz/8ccss315sxl5ngQUL5tXi2igt6cBT8Z3UWqvifp/W9TukV3HQL9/YIfRL+P/p4GUIjhZ5F4MrLhZ9ZgGKQjCpAK9S2mvvqWScvGRALxjzidG8ILcFpyDgqQZ3G3cEJdmvpknc1nIqXfNGWiTuYm7t5dKc9bNBZbSaRpzM8aMLNjM+R1Q9IQ7qSOHSp7H0brxPy0rpx8343aDT8UOj2oxWUUe+zCygjoovWuVGjphwSB4KAKP/d29iNze+66AQ==",
+          "SigningCertUrl": "https://sns.us-east-2.amazonaws.com/SimpleNotificationService-7ff5318490ec183fbaddaa2a969abfda.pem",
+          "UnsubscribeUrl": "https://sns.us-east-2.amazonaws.com/?Action=Unsubscribe&SubscriptionArn=arn:aws:sns:us-east-2:148552580999:ishare-fanout:ca2a9a67-a201-4a9a-807d-85c64b06564f",
+          "MessageAttributes": {}
+        }
+      }
+    ]
+  }

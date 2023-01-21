@@ -1,0 +1,21 @@
+version = 0.1
+stack_name = "networkmanagement"
+s3_bucket = "aws-sam-cli-managed-default-samclisourcebucket-1x8xagjaukjim"
+s3_prefix = "networkmanagement"
+region = "us-east-2"
+confirm_changeset = true
+capabilities = "CAPABILITY_IAM"
+parameter_overrides = "NeptuneClusterEndpoint=\"ishare-neptune.cluster-ro-cwb1wxq3unmu.us-east-2.neptune.amazonaws.com\" NeptunePort=\"8182\" LambdaTimeout=\"900\" LambdaMemory=\"3008\" SecurityGroupIds=\"sg-0820369094bbdb294\" SubnetIds=\"subnet-033c5fe40ffecab17,subnet-01d4a531b71701ed1,subnet-0425399f6c82abfe4\""
+image_repositories = []
+
+[default]
+[default.deploy]
+[default.deploy.parameters]
+stack_name = "networkmanagement"
+s3_bucket = "aws-sam-cli-managed-default-samclisourcebucket-1x8xagjaukjim"
+s3_prefix = "networkmanagement"
+region = "us-east-2"
+confirm_changeset = true
+capabilities = "CAPABILITY_IAM"
+parameter_overrides = "NeptuneClusterEndpoint=\"ishare-neptune.cluster-ro-cwb1wxq3unmu.us-east-2.neptune.amazonaws.com\" NeptunePort=\"8182\" LambdaTimeout=\"20\" LambdaMemory=\"128\" SecurityGroupIds=\"sg-0820369094bbdb294\" SubnetIds=\"subnet-033c5fe40ffecab17,subnet-01d4a531b71701ed1,subnet-0425399f6c82abfe4\""
+image_repositories = []

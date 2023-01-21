@@ -1,0 +1,10 @@
+version = 0.1
+[default]
+[default.deploy]
+[default.deploy.parameters]
+stack_name = "ishare-infra"
+s3_bucket = "<AWSS3Bucket>"
+region = "<AWSRegion>"
+s3_prefix = "Base"
+confirm_changeset = true
+capabilities = "CAPABILITY_IAM CAPABILITY_NAMED_IAM"

@@ -1,0 +1,287 @@
+AWSTemplateFormatVersion: 2010-09-09
+Transform:
+- AWS::Serverless-2016-10-31
+
+Resources:
+  RESTAPI:
+    Type: "AWS::ApiGateway::RestApi"
+    Properties:
+      Body:
+        swagger: "2.0"
+        info:
+          version: "1.0"
+          title: "PostManagement"
+          description: "Returns list of posts"
+        basePath: "/prod"
+        schemes:
+        - "https"
+        paths:
+          /posts/{postid}/comments:
+            post:
+              produces:
+              - "application/json"
+              parameters:
+              - name: "postid"
+                in: "path"
+                required: true
+                type: "string"
+              # responses: {}
+              x-amazon-apigateway-integration:
+                httpMethod: "POST"
+                uri: !Sub "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${!stageVariables.envPostComments}/invocations"    
+                # responses:
+                #   default:
+                #     statusCode: "200"
+                passthroughBehavior: "when_no_match"
+                contentHandling: "CONVERT_TO_TEXT"
+                type: "aws_proxy"
+            options:
+              consumes:
+              - "application/json"
+              produces:
+              - "application/json"
+              responses: {}
+              x-amazon-apigateway-integration:
+                responses:
+                  default:
+                    statusCode: "200"
+                requestTemplates:
+                  application/json: "{\"statusCode\": 200}"
+                passthroughBehavior: "when_no_match"
+                type: "mock"
+          /posts/{postid}/likes:
+            post:
+              produces:
+              - "application/json"
+              parameters:
+              - name: "postid"
+                in: "path"
+                required: true
+                type: "string"
+              # responses: {}
+              x-amazon-apigateway-integration:
+                httpMethod: "POST"
+                uri: !Sub "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${!stageVariables.envPostLikes}/invocations"    
+                # responses:
+                #   default:
+                #     statusCode: "200"
+                passthroughBehavior: "when_no_match"
+                contentHandling: "CONVERT_TO_TEXT"
+                type: "aws_proxy"
+            options:
+              consumes:
+              - "application/json"
+              produces:
+              - "application/json"
+              responses: {}
+              x-amazon-apigateway-integration:
+                responses:
+                  default:
+                    statusCode: "200"
+                requestTemplates:
+                  application/json: "{\"statusCode\": 200}"
+                passthroughBehavior: "when_no_match"
+                type: "mock"
+          /posts:
+            get:
+              consumes:
+              - "application/json"
+              produces:
+              - "application/json"
+              responses:
+                "200":
+                  description: "200 response"
+                  schema:
+                    $ref: "#/definitions/Empty"
+                  headers:
+                    Access-Control-Allow-Origin:
+                      type: "string"
+              x-amazon-apigateway-integration:
+                responses:
+                  default:
+                    statusCode: "200"
+                    responseParameters:
+                      method.response.header.Access-Control-Allow-Origin: "'*'"
+                requestTemplates:
+                  application/json: "{\n    \"payload\" : {},\n    \"operation\" : \"GET\"\
+                    ,\n    \"correlationId\" : \"$context.requestId\"\n}"
+                uri: !Sub "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${!stageVariables.envPosts}/invocations"    
+                passthroughBehavior: "when_no_templates"
+                httpMethod: "POST"
+                contentHandling: "CONVERT_TO_TEXT"
+                type: "aws_proxy"
+            options:
+              consumes:
+              - "application/json"
+              produces:
+              - "application/json"
+              responses:
+                "200":
+                  description: "200 response"
+                  schema:
+                    $ref: "#/definitions/Empty"
+                  headers:
+                    Access-Control-Allow-Origin:
+                      type: "string"
+                    Access-Control-Allow-Methods:
+                      type: "string"
+                    Access-Control-Allow-Headers:
+                      type: "string"
+              x-amazon-apigateway-integration:
+                responses:
+                  default:
+                    statusCode: "200"
+                    responseParameters:
+                      method.response.header.Access-Control-Allow-Methods: "'GET,OPTIONS'"
+                      method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
+                      method.response.header.Access-Control-Allow-Origin: "'*'"
+                requestTemplates:
+                  application/json: "{\"statusCode\": 200}"
+                passthroughBehavior: "when_no_match"
+                type: "mock"
+
+        definitions:
+          Empty:
+            type: "object"
+            title: "Empty Schema"
+      
+  RESTAPIDeployment:
+    Type: "AWS::ApiGateway::Deployment"
+    Properties:
+      RestApiId: !Ref RESTAPI
+      Description: "Production deployment"
+      StageName: "prod"
+      StageDescription:
+        StageName: "prod"
+        Description: "Production Stage"
+        Variables:
+          envPosts: !Ref LambdaPosts
+          envPostComments: !Ref LambdaPostsComments
+          envPostLikes: !Ref LambdaPostsLikes
+
+  LambdaPosts:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      CodeUri: .
+      FunctionName: GetAllPosts
+      Description: Returns a list of the posts 
+      Handler: app-getAllPosts.handler
+      Runtime: nodejs12.x
+      MemorySize: 1024
+      Timeout: 15
+      # Role: !GetAtt PostsLambdaExecRole.Arn
+      Policies:
+      - AWSLambda_FullAccess
+      Environment:
+        Variables:
+          IsMockEnabled: "true"
+  
+  LambdaPostsComments:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      CodeUri: .
+      FunctionName: UpdatePostComments
+      Description: Update comments for a post
+      Handler: app-updatePostComments.handler
+      Runtime: nodejs12.x
+      MemorySize: 1024
+      Timeout: 15
+      # Role: !GetAtt PostsLambdaExecRole.Arn
+      Policies:
+      - AWSLambda_FullAccess
+      Environment:
+        Variables:
+          IsMockEnabled: "true"
+
+  LambdaPostsLikes:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      CodeUri: .
+      FunctionName: UpdatePostLikes
+      Description: Update likes for a post
+      Handler: app-updatePostLikes.handler
+      Runtime: nodejs12.x
+      MemorySize: 1024
+      Timeout: 15
+      # Role: !GetAtt PostsLambdaExecRole.Arn
+      Policies:
+      - AWSLambda_FullAccess
+      Environment:
+        Variables:
+          IsMockEnabled: "true"
+
+  LambdaPostsPermissions:
+    Type: "AWS::Lambda::Permission"
+    Properties:
+      FunctionName: !GetAtt LambdaPosts.Arn
+      Action: "lambda:InvokeFunction"
+      Principal: "apigateway.amazonaws.com"
+      SourceArn: !Sub arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${RESTAPI}/*/posts
+  
+  LambdaCommentsPermissions:
+    Type: "AWS::Lambda::Permission"
+    Properties:
+      FunctionName: !GetAtt LambdaPostsComments.Arn
+      Action: "lambda:InvokeFunction"
+      Principal: "apigateway.amazonaws.com"
+      SourceArn: !Sub arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${RESTAPI}/*/posts/{postid}/comments
+  
+  LambdaLikesPermissions:
+    Type: "AWS::Lambda::Permission"
+    Properties:
+      FunctionName: !GetAtt LambdaPostsLikes.Arn
+      Action: "lambda:InvokeFunction"
+      Principal: "apigateway.amazonaws.com"
+      SourceArn: !Sub arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${RESTAPI}/*/posts/{postid}/likes
+
+  PostsLambdaExecRole:
+    Type: "AWS::IAM::Role"
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: "Allow"
+            Principal:
+              Service:
+                - "lambda.amazonaws.com"
+            Action:
+              - "sts:AssumeRole"
+      Path: "/"
+      Policies:
+        - PolicyName: "LambdaFunctionsAccess"
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: "Allow"
+                Action: "dynamodb:*"
+                Resource: "*"
+              - Effect: "Allow"
+                Action:
+                  - "xray:PutTraceSegments"
+                  - "xray:PutTelemetryRecords"
+                Resource: "*"
+              - Effect: "Allow"
+                Action:
+                  - "logs:CreateLogGroup"
+                  - "logs:CreateLogStream"
+                  - "logs:PutLogEvents"
+                Resource: "*"
+              - Effect: "Allow"
+                Action:
+                  - "iam:GetRole"
+                  - "iam:CreateRole"
+                  - "iam:DeleteRole"
+                  - "iam:PassRole"
+                  - "iam:PutRolePolicy"
+                  - "iam:DeleteRolePolicy"
+                  - "lambda:ListTags"
+                  - "lambda:TagResource"
+                  - "lambda:UntagResource"
+                  - "ec2:DescribeSecurityGroups"
+                  - "ec2:DescribeSubnets"
+                  - "ec2:DescribeVpcs"
+                  - "ec2:CreateNetworkInterface"
+                  - "ec2:AttachNetworkInterface"
+                  - "ec2:DescribeNetworkInterfaces"
+                  - "ec2:DeleteNetworkInterface"
+                Resource: "*"

@@ -1,0 +1,13 @@
+{
+    "aws-region":"us-east-2",
+    "auth": {
+        "userPoolId": "us-east-2_TuQ8uFmOj",
+        "userPoolWebClientId": "4t1du44dfth2aj3np229jnutji"
+    },
+    "api": {
+        "core": "https://coycrts589.execute-api.us-east-2.amazonaws.com/prod",
+        "postmanagement": "https://89l7o4a0kk.execute-api.us-east-2.amazonaws.com/prod",
+        "recommendationmanagement": "https://vrc2top4b9.execute-api.us-east-2.amazonaws.com/Prod"
+        
+    }
+}

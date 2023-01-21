@@ -1,0 +1,20 @@
+{
+  "Records": [
+    {
+      "messageId": "059f36b4-87a3-44ab-83d2-661975830a7d",
+      "receiptHandle": "AQEBwJnKyrHigUMZj6rYigCgxlaS3SLy0a...",
+      "body": "{\"eventID\": \"dcc3c8fb3521fd6fd8ef7fa06496595a\", \"eventName\": \"INSERT\", \"eventVersion\": \"1.1\", \"eventSource\": \"aws:dynamodb\", \"awsRegion\": \"ap-southeast-2\", \"dynamodb\": {\"ApproximateCreationDateTime\": 1638419979.0, \"Keys\": {\"eventId\": {\"S\": \"p1\"}, \"LastUpdateDate\": {\"S\": \"1638417735\"}}, \"NewImage\": {\"eventId\": {\"S\": \"p1\"}, \"mediaLoc\": {\"S\": \"2021/12/01/p1.mp4\"}, \"by\": {\"S\": \"jq\"}, \"action\": {\"S\": \"created\"}, \"isActive\": {\"S\": \"Y\"}, \"entity\": {\"S\": \"cloud9-2\"}, \"LastUpdateDate\": {\"S\": \"1638417735\"}, \"desc\": {\"S\": \"Kungfu Panda is eating Bamboo\"}, \"tags\": {\"SS\": [\"animal\", \"nature\"]}}, \"SequenceNumber\": \"2400000000005483540059\", \"SizeBytes\": 178, \"StreamViewType\": \"NEW_IMAGE\"}, \"eventSourceARN\": \"arn:aws:dynamodb:ap-southeast-2:956288449190:table/ishare/stream/2021-12-02T03:44:10.971\"}",
+      "attributes": {
+        "ApproximateReceiveCount": "1",
+        "SentTimestamp": "1545082649183",
+        "SenderId": "AIDAIENQZJOLO23YVJ4VO",
+        "ApproximateFirstReceiveTimestamp": "1545082649185"
+      },
+      "messageAttributes": {},
+      "md5OfBody": "098f6bcd4621d373cade4e832627b4f6",
+      "eventSource": "aws:sqs",
+      "eventSourceARN": "arn:aws:sqs:us-east-2:123456789012:my-queue",
+      "awsRegion": "us-east-2"
+    }
+  ]
+}

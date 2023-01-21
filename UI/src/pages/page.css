@@ -1,0 +1,25 @@
+.player-wrapper {
+    position: relative;
+    padding-top: 56.25%; /* 720 / 1280 = 0.5625 */
+  }
+  
+.react-player {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+:root {
+    --ion-item-border-color: #fff;
+   /* --ion-background-color: #d6d2d6; */
+  /*--ion-tab-bar-color: #bccbcd;
+  --ion-item-border-color: #344f51;
+  --ion-item-color: #a1dce7;
+  --ion-tab-bar-color: #a1dce7;
+  --ion-tab-bar-color-selected: #d6bd9d;
+  --ion-toolbar-color :  #a1dce7 ;     
+  --ion-toolbar-border-color:#c4f3f6;
+  --ion-toolbar-segment-indicator-color:#c4f3f6;
+  --ion-toolbar-segment-background:#c4f3f6; */
+}
+

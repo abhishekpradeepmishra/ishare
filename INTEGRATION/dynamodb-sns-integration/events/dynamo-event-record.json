@@ -1,0 +1,46 @@
+{
+    "Records": [
+      {
+        "eventID": "f120e3ff61c6616844aaa48d41b57918",
+        "eventName": "INSERT",
+        "eventVersion": "1.1",
+        "eventSource": "aws:dynamodb",
+        "awsRegion": "us-east-2",
+        "dynamodb": {
+          "ApproximateCreationDateTime": 1638502569,
+          "Keys": {
+            "eventId": {
+              "S": "a6f36062b01c84b92ad1f0870bdf9495012345"
+            },
+            "action": {
+              "S": "follow"
+            }
+          },
+          "NewImage": {
+            "eventId": {
+              "S": "a6f36062b01c84b92ad1f0870bdf9495012345"
+            },
+            "gsi_sk1": {
+              "S": "u958d6e4fa83c427bb69afa21c12f1db7#followu139d26d12b4a4b89aa842c726f0eb673"
+            },
+            "by": {
+              "S": "u958d6e4fa83c427bb69afa21c12f1db7fabtan"
+            },
+            "action": {
+              "S": "follow"
+            },
+            "gsi_sk2": {
+              "S": "u139d26d12b4a4b89aa842c726f0eb673#followedbyu958d6e4fa83c427bb69afa21c12f1db7"
+            },
+            "entity": {
+              "S": "u139d26d12b4a4b89aa842c726f0eb673"
+            }
+          },
+          "SequenceNumber": "3252100000000011903966316",
+          "SizeBytes": 358,
+          "StreamViewType": "NEW_IMAGE"
+        },
+        "eventSourceARN": "arn:aws:dynamodb:us-east-2:148552580999:table/ishare-userpost/stream/2021-12-02T09:18:48.511"
+      }
+    ]
+  }

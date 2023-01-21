@@ -1,0 +1,230 @@
+AWSTemplateFormatVersion: 2010-09-09
+Transform:
+- AWS::Serverless-2016-10-31
+
+Resources:
+  RESTAPI:
+    Type: "AWS::ApiGateway::RestApi"
+    Properties:
+      Body:
+        swagger: "2.0"
+        info:
+          version: "1.0"
+          title: "PostManagement1"
+          description: "Returns list of posts"
+        basePath: "/prod"
+        schemes:
+        - "https"
+        paths:
+          /posts:
+            get:
+              consumes:
+              - "application/json"
+              produces:
+              - "application/json"
+              responses:
+                "200":
+                  description: "200 response"
+                  schema:
+                    $ref: "#/definitions/Empty"
+                  headers:
+                    Access-Control-Allow-Origin:
+                      type: "string"
+              x-amazon-apigateway-integration:
+                responses:
+                  default:
+                    statusCode: "200"
+                    responseParameters:
+                      method.response.header.Access-Control-Allow-Origin: "'*'"
+                requestTemplates:
+                  application/json: "{\n    \"payload\" : {},\n    \"operation\" : \"GET\"\
+                    ,\n    \"correlationId\" : \"$context.requestId\"\n}"
+                uri: !Sub "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${!stageVariables.envPosts}/invocations"    
+                passthroughBehavior: "when_no_templates"
+                httpMethod: "GET"
+                contentHandling: "CONVERT_TO_TEXT"
+                type: "aws"
+            options:
+              consumes:
+              - "application/json"
+              produces:
+              - "application/json"
+              responses:
+                "200":
+                  description: "200 response"
+                  schema:
+                    $ref: "#/definitions/Empty"
+                  headers:
+                    Access-Control-Allow-Origin:
+                      type: "string"
+                    Access-Control-Allow-Methods:
+                      type: "string"
+                    Access-Control-Allow-Headers:
+                      type: "string"
+              x-amazon-apigateway-integration:
+                responses:
+                  default:
+                    statusCode: "200"
+                    responseParameters:
+                      method.response.header.Access-Control-Allow-Methods: "'GET,OPTIONS'"
+                      method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
+                      method.response.header.Access-Control-Allow-Origin: "'*'"
+                requestTemplates:
+                  application/json: "{\"statusCode\": 200}"
+                passthroughBehavior: "when_no_match"
+                type: "mock"
+
+
+          /posts/{postid}:
+              post:
+                produces:
+                - "application/json"
+                parameters:
+                - name: "postid"
+                  in: "path"
+                  required: true
+                  type: "string"
+                responses: {}
+                x-amazon-apigateway-integration:
+                  httpMethod: "POST"
+                  uri: "arn:aws:apigateway:us-west-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-west-1:990993517744:function:${!stageVariables.envPostComments}/invocations"
+                  responses:
+                    default:
+                      statusCode: "200"
+                  passthroughBehavior: "when_no_match"
+                  contentHandling: "CONVERT_TO_TEXT"
+                  type: "aws"
+              options:
+                consumes:
+                - "application/json"
+                produces:
+                - "application/json"
+                responses: {}
+                x-amazon-apigateway-integration:
+                  responses:
+                    default:
+                      statusCode: "200"
+                  requestTemplates:
+                    application/json: "{\"statusCode\": 200}"
+                  passthroughBehavior: "when_no_match"
+                  type: "mock"
+
+                  definitions:
+                    Empty:
+                      type: "object"
+                      title: "Empty Schema"
+      
+  RESTAPIDeployment:
+    Type: "AWS::ApiGateway::Deployment"
+    Properties:
+      RestApiId: !Ref RESTAPI
+      Description: "Production deployment"
+      StageName: "prod"
+      StageDescription:
+        StageName: "prod"
+        Description: "Production Stage"
+        Variables:
+          envPosts: !Ref LambdaPosts
+          envPostComments: !Ref LambdaPostsComments
+
+  LambdaPosts:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      CodeUri: .
+      FunctionName: GetAllPosts
+      Description: Returns a list of the posts 
+      Handler: app-getAllPosts.handler
+      Runtime: nodejs12.x
+      MemorySize: 1024
+      Timeout: 15
+      Role: !GetAtt PostsLambdaExecRole.Arn
+      Policies:
+      - AWSLambdaFullAccess
+      Environment:
+        Variables:
+          IsMockEnabled: "true"
+  
+  LambdaPostsComments:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      CodeUri: .
+      FunctionName: UpdatePostComments
+      Description: Returns a list of the posts 
+      Handler: app-updatePostById.handler
+      Runtime: nodejs12.x
+      MemorySize: 1024
+      Timeout: 15
+      Role: !GetAtt PostsLambdaExecRole.Arn
+      Policies:
+      - AWSLambdaFullAccess
+      Environment:
+        Variables:
+          IsMockEnabled: "true"
+
+  LambdaPostsPermissions:
+    Type: "AWS::Lambda::Permission"
+    Properties:
+      FunctionName: !GetAtt LambdaPosts.Arn
+      Action: "lambda:InvokeFunction"
+      Principal: "apigateway.amazonaws.com"
+      SourceArn: !Sub arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${RESTAPI}/*/posts
+
+  LambdaPostsPermissions1:
+    Type: "AWS::Lambda::Permission"
+    Properties:
+      FunctionName: !GetAtt LambdaPostsComments.Arn
+      Action: "lambda:InvokeFunction"
+      Principal: "apigateway.amazonaws.com"
+      SourceArn: !Sub arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${RESTAPI}/*/posts/{postid}
+
+  PostsLambdaExecRole:
+    Type: "AWS::IAM::Role"
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: "Allow"
+            Principal:
+              Service:
+                - "lambda.amazonaws.com"
+            Action:
+              - "sts:AssumeRole"
+      Path: "/"
+      Policies:
+        - PolicyName: "LambdaFunctionsAccess"
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: "Allow"
+                Action: "dynamodb:*"
+                Resource: "*"
+              - Effect: "Allow"
+                Action:
+                  - "xray:PutTraceSegments"
+                  - "xray:PutTelemetryRecords"
+                Resource: "*"
+              - Effect: "Allow"
+                Action:
+                  - "logs:CreateLogGroup"
+                  - "logs:CreateLogStream"
+                  - "logs:PutLogEvents"
+                Resource: "*"
+              - Effect: "Allow"
+                Action:
+                  - "iam:GetRole"
+                  - "iam:CreateRole"
+                  - "iam:DeleteRole"
+                  - "iam:PassRole"
+                  - "iam:PutRolePolicy"
+                  - "iam:DeleteRolePolicy"
+                  - "lambda:ListTags"
+                  - "lambda:TagResource"
+                  - "lambda:UntagResource"
+                  - "ec2:DescribeSecurityGroups"
+                  - "ec2:DescribeSubnets"
+                  - "ec2:DescribeVpcs"
+                  - "ec2:CreateNetworkInterface"
+                  - "ec2:AttachNetworkInterface"
+                  - "ec2:DescribeNetworkInterfaces"
+                  - "ec2:DeleteNetworkInterface"
+                Resource: "*"

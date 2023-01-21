@@ -1,0 +1,65 @@
+[
+    {
+        "url": "https://videorepository-abhmish.s3-ap-southeast-1.amazonaws.com/video1.mp4",
+        "title": "Big Buck Bunny",
+        "likes": "200",
+        "author": "blender",
+        "id": "e8665d2a-3e79-468b-b994-3fe9dcf77323",
+        "isVideo": true,
+        "thumbnail": "images/BigBuckBunny.jpg"
+    },
+    {
+        "url": "https://abhmish-ishare-artefacts-ohio.s3.us-east-2.amazonaws.com/data/images/butterfly.jpg",
+        "title": "Butterfly",
+        "likes": "200",
+        "author": "nature-lover",
+        "id": "079869da-c20f-4c43-8fae-622232cff833",
+        "isVideo": false,
+        "thumbnail": "images/butterfly.jpg"
+    },
+    {
+        "url": "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
+        "title": "The first Blender Open Movie from 2006",
+        "likes": "200",
+        "author": "blender",
+        "id": "c70d1664-40b6-4b8d-bfc5-d33e2b331563",
+        "isVideo": true,
+        "thumbnail": "images/ElephantsDream.jpg"
+    },
+    {
+        "url": "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/SubaruOutbackOnStreetAndDirt.mp4",
+        "title": "Subaru Outback On Street And Dirt",
+        "likes": "200",
+        "author": "garage",
+        "id": "ee7e5424-adaf-4748-93d5-3e56d0009bb2",
+        "isVideo": true,
+        "thumbnail": "images/SubaruOutbackOnStreetAndDirt.jpg"
+    },
+    {
+        "url": "https://abhmish-ishare-artefacts-ohio.s3.us-east-2.amazonaws.com/data/images/swan.jpg",
+        "title": "swan",
+        "likes": "200",
+        "author": "nature-lover",
+        "id": "caeaff40-c19d-479a-910e-fce9f49a3987",
+        "isVideo": false,
+        "thumbnail": "images/swan.jpg"
+    },
+    {
+        "url": "https://abhmish-ishare-artefacts-ohio.s3.us-east-2.amazonaws.com/data/images/father.jpg",
+        "title": "Father",
+        "likes": "200",
+        "author": "family-guy",
+        "id": "f9738cca-d992-48b6-9b4c-2bddbd191dd8",
+        "isVideo": false,
+        "thumbnail": "images/father.jpg"
+    },
+    {
+        "url": "https://abhmish-ishare-artefacts-ohio.s3.us-east-2.amazonaws.com/data/images/frog.jpg",
+        "title": "Frog",
+        "likes": "200",
+        "author": "nature-lover",
+        "id": "6ecdf0f0-b28e-4e0c-867d-336e74b4b186",
+        "isVideo": false,
+        "thumbnail": "images/frog.jpg"
+    }
+]

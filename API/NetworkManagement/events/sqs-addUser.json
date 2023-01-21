@@ -1,0 +1,20 @@
+{
+  "Records": [
+    {
+      "messageId": "059f36b4-87a3-44ab-83d2-661975830a7d",
+      "receiptHandle": "AQEBwJnKyrHigUMZj6rYigCgxlaS3SLy0a...",
+      "body": "{'Records': [{'eventID': '11e7f9d83e76a3a41f84010892891c8a', 'eventName': 'INSERT', 'eventVersion': '1.1', 'eventSource': 'aws:dynamodb', 'awsRegion': 'ap-southeast-2', 'dynamodb': {'ApproximateCreationDateTime': 1638417757.0, 'Keys': {'eventId': {'S': 'u1'}, 'LastUpdateDate': {'S': '1638417730'}}, 'NewImage': {'eventId': {'S': 'u1'}, 'action': {'S': 'bio'}, 'prefname': {'S': 'KuetTai'}, 'email': {'S': 'yongkue+ishare@amazon.com'}, 'entity': {'S': 'u001'}, 'LastUpdateDate': {'S': '1638417730'}}, 'SequenceNumber': '1800000000005481797069', 'SizeBytes': 130, 'StreamViewType': 'NEW_IMAGE'}, 'eventSourceARN': 'arn:aws:dynamodb:ap-southeast-2:956288449190:table/ishare/stream/2021-12-02T03:44:10.971'}]}",
+      "attributes": {
+        "ApproximateReceiveCount": "1",
+        "SentTimestamp": "1545082649183",
+        "SenderId": "AIDAIENQZJOLO23YVJ4VO",
+        "ApproximateFirstReceiveTimestamp": "1545082649185"
+      },
+      "messageAttributes": {},
+      "md5OfBody": "098f6bcd4621d373cade4e832627b4f6",
+      "eventSource": "aws:sqs",
+      "eventSourceARN": "arn:aws:sqs:us-east-2:123456789012:my-queue",
+      "awsRegion": "us-east-2"
+    }
+  ]
+}

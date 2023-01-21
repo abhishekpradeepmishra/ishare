@@ -1,0 +1,44 @@
+{
+	"Records": [{
+		"eventID": "d00d690e570ab00a659dfb893be69940",
+		"eventName": "INSERT",
+		"eventVersion": "1.1",
+		"eventSource": "aws:dynamodb",
+		"awsRegion": "ap-southeast-2",
+		"dynamodb": {
+			"ApproximateCreationDateTime": 1638418180.0,
+			"Keys": {
+				"eventId": {
+					"S": "pa1"
+				},
+				"LastUpdateDate": {
+					"S": "1638417755"
+				}
+			},
+			"NewImage": {
+				"eventId": {
+					"S": "pa1"
+				},
+				"gsi_sk1": {
+					"S": "p001#likes#u001"
+				},
+				"by": {
+					"S": "u001"
+				},
+				"action": {
+					"S": "likes"
+				},
+				"entity": {
+					"S": "p001"
+				},
+				"LastUpdateDate": {
+					"S": "1638417755"
+				}
+			},
+			"SequenceNumber": "2000000000005482144237",
+			"SizeBytes": 117,
+			"StreamViewType": "NEW_IMAGE"
+		},
+		"eventSourceARN": "arn:aws:dynamodb:ap-southeast-2:956288449190:table/ishare/stream/2021-12-02T03:44:10.971"
+	}]
+}

@@ -1,0 +1,40 @@
+amplify-authenticator {
+    /* background: tomato; */
+    /* background-image: url(../images/bg.jpg); */
+    padding: 5px;
+}
+
+amplify-sign-in{
+    /* background-image: url(../images/bg.jpg); */
+    padding: 5px;
+}
+
+/* 
+amplify-sign-in
+amplify-confirm-sign-in
+amplify-sign-up
+amplify-confirm-sign-up
+amplify-forgot-password
+amplify-require-new-password
+amplify-verify-contact
+amplify-totp-setup */
+
+
+/* on desktop show like a mobile device */
+@media (min-width: 540px) {
+ 
+    ion-tabs {
+        margin-left: 30% !important;
+        width: 40% !important;
+        padding-top: 1% !important;
+        padding-bottom: 1% !important;
+        border: rgb(1, 51, 76) solid 1px;
+        border-radius: 10px;
+        background-color: #fff;
+    }
+
+    body {
+        background-color: #110f0f;
+    }
+}
+  
