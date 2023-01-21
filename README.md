@@ -1,4 +1,4 @@
-# Content Sharing App
+# iShare (Content Sharing App)
 
 This application is a sample content sharing app. Application allows you to share pics, videos and articles. You can like a content or comments on content. The application is enabled to give contextual recommendation to people. 
 
@@ -118,3 +118,122 @@ git clone codecommit://<AWSUserProfile>@Ishare <folder name>
 Also install codecommit helper tool https://docs.aws.amazon.com/codecommit/latest/userguide/setting-up-git-remote-codecommit.html
 
 test-push susarika --> To be removed
+
+
+
+## Workflow Design
+
+
+**Scenario:** Imagine you’ve been tasked to build an instagram-like application , uploading/ displaying/deleting images, while being able to like or comment. How would you build this application? 
+
+
+**What would you learn in this workshop?**
+How you would design the microservices architecture?
+How would you secure the environment and APIs?
+Which data stores would you use?
+Which software frameworks would you use?
+Software Implementation and data modelling
+
+**Tech Domains**
+Serverless + API
+Datastore
+Security, IaC , integration
+
+
+**Proposed Architecture:**
+![](./designs/images/architecture.png) 
+**Idea and collaterals:**
+
+**Teams:**
+
+![](./designs/images/teams.png) 
+**Milestones:**
+
+
+**Milestone 1: Home Screen Setup Locally with Authentication** 
+![](./designs/images/m1.png) 
+
+Milestone 1 Dependencies: 
+
+* None
+
+
+* * *
+
+**Milestone 2: Home Screen read from persistent store (optionally with security)**
+
+![](./designs/images/m2.png) 
+
+Milestone 2 Dependencies: 
+
+* Milestone 1 items
+* Do you need separate S3 images to store images? Or can we use one created as part of milestone 1?
+
+* * *
+
+**Milestone 3: Home/Comments screen write to persistent store**
+
+![](./designs/images/m3.png) 
+
+Milestone 3 Dependencies: 
+
+* None
+
+* * *
+**Milestone 4: Infra to respond to changes to DynamoDB table is setup**
+![](./designs/images/m4.png) 
+
+Milestone 4 Dependencies: 
+
+* DyanomoDB table
+
+
+**Milestone 5 Write notification to redis cache**
+
+![](./designs/images/m5.png) 
+
+Milestone 5 Dependencies
+
+* SNS topic from Milestone 4
+
+
+* * *
+
+**Milestone 6: Notification Screen from application is working against API integrated with Redis cluster**
+
+![](./designs/images/m6.png) 
+
+Milestone 6 Dependencies:
+
+* Redis cluster from Milestone 5
+
+
+* * *
+**Milestone 7: Recommendations flow-backend**
+
+![](./designs/images/m7.png) 
+
+Milestone 7 Dependencies
+
+
+* SNS topic from milestone 4
+
+
+* * *
+
+**Milestone 8: Recommendation flow API & UI**
+![](./designs/images/m8.png) 
+
+Milestone 8 Dependencies
+
+
+* Neptune database from milestone 7
+
+* * *
+Milestone 9: User Preference Screen
+![](./designs/images/m9.png) 
+
+Milestone 9 Dependencies
+
+* Milestone 2,3,4 for DynamoDB table design (Single table design)
+
