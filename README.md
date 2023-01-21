@@ -111,16 +111,6 @@ Wait for the execution to complete.
 
 Next step is to setup individual services, go to [PostManagement](./API/PostManagement) folder
 
-
-How to clone the repo?
-git clone codecommit://<AWSUserProfile>@Ishare <folder name>
-
-Also install codecommit helper tool https://docs.aws.amazon.com/codecommit/latest/userguide/setting-up-git-remote-codecommit.html
-
-test-push susarika --> To be removed
-
-
-
 ## Workflow Design
 
 
