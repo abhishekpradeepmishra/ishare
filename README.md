@@ -163,7 +163,7 @@ Milestone 2 Dependencies:
 
 **Milestone 3: Home/Comments screen write to persistent store**
 
-![](./designs/images/m3.png) 
+![](./Designs/images/m3.png) 
 
 Milestone 3 Dependencies: 
 
