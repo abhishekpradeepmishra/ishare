@@ -131,17 +131,17 @@ Security, IaC , integration
 
 
 **Proposed Architecture:**
-![](./designs/images/architecture.png) 
+![](./Designs/images/architecture.png) 
 **Idea and collaterals:**
 
 **Teams:**
 
-![](./designs/images/teams.png) 
+![](./Designs/images/teams.png) 
 **Milestones:**
 
 
 **Milestone 1: Home Screen Setup Locally with Authentication** 
-![](./designs/images/m1.png) 
+![](./Designs/images/m1.png) 
 
 Milestone 1 Dependencies: 
 
@@ -152,7 +152,7 @@ Milestone 1 Dependencies:
 
 **Milestone 2: Home Screen read from persistent store (optionally with security)**
 
-![](./designs/images/m2.png) 
+![](./Designs/images/m2.png) 
 
 Milestone 2 Dependencies: 
 
@@ -171,7 +171,7 @@ Milestone 3 Dependencies:
 
 * * *
 **Milestone 4: Infra to respond to changes to DynamoDB table is setup**
-![](./designs/images/m4.png) 
+![](./Designs/images/m4.png) 
 
 Milestone 4 Dependencies: 
 
@@ -180,7 +180,7 @@ Milestone 4 Dependencies:
 
 **Milestone 5 Write notification to redis cache**
 
-![](./designs/images/m5.png) 
+![](./Designs/images/m5.png) 
 
 Milestone 5 Dependencies
 
@@ -191,7 +191,7 @@ Milestone 5 Dependencies
 
 **Milestone 6: Notification Screen from application is working against API integrated with Redis cluster**
 
-![](./designs/images/m6.png) 
+![](./Designs/images/m6.png) 
 
 Milestone 6 Dependencies:
 
@@ -201,7 +201,7 @@ Milestone 6 Dependencies:
 * * *
 **Milestone 7: Recommendations flow-backend**
 
-![](./designs/images/m7.png) 
+![](./Designs/images/m7.png) 
 
 Milestone 7 Dependencies
 
@@ -212,7 +212,7 @@ Milestone 7 Dependencies
 * * *
 
 **Milestone 8: Recommendation flow API & UI**
-![](./designs/images/m8.png) 
+![](./Designs/images/m8.png) 
 
 Milestone 8 Dependencies
 
@@ -221,7 +221,7 @@ Milestone 8 Dependencies
 
 * * *
 Milestone 9: User Preference Screen
-![](./designs/images/m9.png) 
+![](./Designs/images/m9.png) 
 
 Milestone 9 Dependencies
 
